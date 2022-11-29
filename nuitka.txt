@@ -1,0 +1,3 @@
+python -m nuitka --onefile --follow-imports --windows-disable-console --mingw64 --windows-icon-from-ico=D:\CODE\OvaryCancer\icon.ico D:\CODE\OvaryCancer\gui.py
+
+python -m nuitka --onefile --mingw64 --enable-plugin=tk-inter --windows-disable-console --windows-icon-from-ico=D:\CODE\OvaryCancer\icon.ico D:\CODE\OvaryCancer\gui.py
