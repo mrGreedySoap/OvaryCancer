@@ -19,26 +19,27 @@ def average_temperature(temp_l: list[str]) -> float:
     return t_sr / len(temp_l)
 
 
-def add_result(uid: str, res_str: str, temp_list: list) -> None:
+def add_result(uid: str, res_str: str, temp_list: list, name:str = NAME) -> None:
     """
     Заполняем созданный ранее {NAME}.docx
     temp_list -> [str(float), '37.1', '37.2', ... ], len(temp_list) = 9 (matrix[3*3])
     """
-    document = docx.Document(f"{os.path.dirname(sys.argv[0])}{os.sep}{NAME}.docx")
+    document_path = f"{os.path.dirname(os.path.realpath(__file__))}{os.sep}{name}.docx"
+    document = docx.Document(document_path)
     document.add_heading(uid, level=1)
 
     # Проверка, что не сдвинуты занчения, если сдвинуты, не обрабатываем их
     if temp_list[0] == '':
         print(f"{uid} is shifted: {temp_list}")
         document.add_paragraph('The value in the database is shifted, this study is not processed')
-        document.save(f"{os.path.dirname(sys.argv[0])}{os.sep}{NAME}.docx")
+        document.save(document_path)
         log.add_to_log(f"{uid} is shifted: {temp_list}")
         return None
 
     if temp_list[-1] == 0:
         print(f"{uid} is shifted: {temp_list}")
         document.add_paragraph('The value in the database is shifted, this study is not processed')
-        document.save(f"{os.path.dirname(sys.argv[0])}{os.sep}{NAME}.docx")
+        document.save(document_path)
         log.add_to_log(f"{uid} is shifted: {temp_list}")
         return None
 
@@ -83,20 +84,21 @@ def add_result(uid: str, res_str: str, temp_list: list) -> None:
     # добавляем из базы диагноз врача
     document.add_paragraph(res_str)
     # сохраняем файл
-    document.save(f"{os.path.dirname(sys.argv[0])}{os.sep}{NAME}.docx")
+    document.save(document_path)
     return None
 
 
-def create_empty_docx(base_path: str) -> None:
+def create_empty_docx(base_path: str, name:str = NAME) -> None:
     """
     Создаем пустой файл
     :param base_path: Путь к базе данных, будет записан в заголовке
+    :param name: Имя файла для сохранения, по умолчанию result
     :return: None
     """
     try:
         document = docx.Document()
         document.add_heading(base_path, 0)
-        document.save(f"{os.path.dirname(sys.argv[0])}{os.sep}{NAME}.docx")
+        document.save(f"{os.path.dirname(os.path.realpath(__file__))}{os.sep}{name}.docx")
     except Exception as err:
         log.add_warn(f"Error, can`t create docx file: {err}")
     return None
