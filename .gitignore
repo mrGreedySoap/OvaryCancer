@@ -1,4 +1,9 @@
 
+.idea/
+*.xml
+*.iml
+*.pyc
+ovary.rtm
+PM0447.rtm
 *.rtmdb
-*.rtm
-*.docx
+result.docx
